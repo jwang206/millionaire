@@ -36,38 +36,48 @@ class Game
   end
 
   def player_options
+    puts "---------------------------------------------------------------"
     options = [
       "Answer Question",
-      "Walk Away With #{@purse.get_value}",
+      "Walk Away",
       "Use a Lifeline"
     ]
-    unless @purse.get_value
-      options.delete("Walk Away With #{@purse.get_value}")
-    end
+
+    # delete lifeline option if it's all used
     if @available_lifelines == []
-      options.delete("Use a Lifeline")
+      @options.delete("Use a Lifeline")
     end
-    puts "Choose an option:"
+
+    # prompt user to get input
+
     number = 1
+
+    # show available options
     options.each do |option|
       puts "[#{number}] #{options[number-1]}"
       number += 1
     end
+    puts
+
+    # get user input
+    print "Choose an option[1-3]:"
     choice = gets.chomp.to_i
+
     if choice == 1
+      puts
       evaluate_answer
     elsif choice == 2
-      puts "Thanks for playing! You walk away with #{@purse.get_value}!"
+      puts "\nThanks for playing! You walk away with #{@purse.get_value}!"
       @end_game = true
       game_is_over
     elsif choice == 3
+      puts
       choose_lifeline
     end
   end
 
   def retrieve_question
-    puts "Question #{@question_number + 1}:"
-    puts @questions.get_question
+    puts "Question #{@question_number + 1} -  " + "#{@questions.get_question}"
   end
 
   def list_answers
@@ -97,7 +107,7 @@ class Game
   def choose_lifeline
     puts "Please choose a lifeline: "
     number = 1
-    
+
     @available_lifelines.each do |lifeline|
       puts "#{number}. #{@available_lifelines[number-1]}"
       number += 1
@@ -152,7 +162,7 @@ class Game
       return true
     elsif @end_game
       return true
-    else 
+    else
       return false
     end
   end
